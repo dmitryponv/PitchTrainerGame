@@ -24,46 +24,15 @@ package com.example.pitchtrainergame;
 
 public class FFT {
 
-    int n, m;
+    static int n = 0, m;
 
     // Lookup tables.  Only need to recompute when size of FFT changes.
-    double[] cos;
-    double[] sin;
+    static double[] cos;
+    static double[] sin;
 
-    double[] window;
+    static double[] window;
 
-    public FFT(int n) {
-        this.n = n;
-        this.m = (int)(Math.log(n) / Math.log(2));
-
-        // Make sure n is a power of 2
-        if(n != (1<<m))
-            throw new RuntimeException("FFT length must be power of 2");
-
-        // precompute tables
-        cos = new double[n/2];
-        sin = new double[n/2];
-
-//     for(int i=0; i<n/4; i++) {
-//       cos[i] = Math.cos(-2*Math.PI*i/n);
-//       sin[n/4-i] = cos[i];
-//       cos[n/2-i] = -cos[i];
-//       sin[n/4+i] = cos[i];
-//       cos[n/2+i] = -cos[i];
-//       sin[n*3/4-i] = -cos[i];
-//       cos[n-i]   = cos[i];
-//       sin[n*3/4+i] = -cos[i];
-//     }
-
-        for(int i=0; i<n/2; i++) {
-            cos[i] = Math.cos(-2*Math.PI*i/n);
-            sin[i] = Math.sin(-2*Math.PI*i/n);
-        }
-//
-        makeWindow();
-    }
-
-    protected void makeWindow() {
+    protected static void makeWindow() {
         // Make a blackman window:
         // w(n)=0.42-0.5cos{(2*PI*n)/(N-1)}+0.08cos{(4*PI*n)/(N-1)};
         window = new double[n];
@@ -72,7 +41,7 @@ public class FFT {
                     + 0.08 * Math.cos(4*Math.PI*i/(n-1));
     }
 
-    public double[] getWindow() {
+    public static double[] getWindow() {
         return window;
     }
 
@@ -96,7 +65,7 @@ public class FFT {
      *   Permission to copy and use this program is granted
      *   as long as this header is included.
      ****************************************************************/
-    public void fft(double[] x, double[] y)
+    public static void fft(double[] x, double[] y)
     {
         int i,j,k,n1,n2,a;
         double c,s,e,t1,t2;
@@ -150,54 +119,55 @@ public class FFT {
     }
 
     // Test the FFT to make sure it's working
-    public static void main_test(String[] args) {
-        int N = 8;
+    public static void main_test(int cnt) {
 
-        FFT fft = new FFT(N);
+        init(cnt);
 
-        double[] window = fft.getWindow();
-        double[] re = new double[N];
-        double[] im = new double[N];
+        //FFT fft = new FFT(N);
+
+        double[] window = getWindow();
+        double[] re = new double[cnt];
+        double[] im = new double[cnt];
 
         // Impulse
         re[0] = 1; im[0] = 0;
-        for(int i=1; i<N; i++)
+        for(int i=1; i<cnt; i++)
             re[i] = im[i] = 0;
-        beforeAfter(fft, re, im);
+        beforeAfter(cnt, re, im);
 
         // Nyquist
-        for(int i=0; i<N; i++) {
+        for(int i=0; i<cnt; i++) {
             re[i] = Math.pow(-1, i);
             im[i] = 0;
         }
-        beforeAfter(fft, re, im);
+        beforeAfter(cnt, re, im);
 
         // Single sin
-        for(int i=0; i<N; i++) {
-            re[i] = Math.cos(2*Math.PI*i / N);
+        for(int i=0; i<cnt; i++) {
+            re[i] = Math.cos(2*Math.PI*i / cnt);
             im[i] = 0;
         }
-        beforeAfter(fft, re, im);
+        beforeAfter(cnt, re, im);
 
         // Ramp
-        for(int i=0; i<N; i++) {
+        for(int i=0; i<cnt; i++) {
             re[i] = i;
             im[i] = 0;
         }
-        beforeAfter(fft, re, im);
+        beforeAfter(cnt, re, im);
 
         long time = System.currentTimeMillis();
         double iter = 30000;
         for(int i=0; i<iter; i++)
-            fft.fft(re,im);
+            fft(re,im);
         time = System.currentTimeMillis() - time;
         System.out.println("Averaged " + (time/iter) + "ms per iteration");
     }
 
-    protected static void beforeAfter(FFT fft, double[] re, double[] im) {
+    protected static void beforeAfter(int cnt, double[] re, double[] im) {
         System.out.println("Before: ");
         printReIm(re, im);
-        fft.fft(re, im);
+        fft(re, im);
         System.out.println("After: ");
         printReIm(re, im);
     }
@@ -214,12 +184,46 @@ public class FFT {
         System.out.println("]");
     }
 
-    public static double[] fftCalculator(double[] re, double[] im, int length) {
+    public static void init(int cnt)
+    {
+        FFT.n = cnt;
+        FFT.m = (int) (Math.log(n) / Math.log(2));
+
+        // Make sure n is a power of 2
+        if (cnt != (1 << m))
+            throw new RuntimeException("FFT length must be power of 2");
+
+        // precompute tables
+        cos = new double[cnt / 2];
+        sin = new double[cnt / 2];
+
+        //for(int i=0; i<n/4; i++) {
+        //    cos[i] = Math.cos(-2*Math.PI*i/n);
+        //    sin[n/4-i] = cos[i];
+        //    cos[n/2-i] = -cos[i];
+        //    sin[n/4+i] = cos[i];
+        //    cos[n/2+i] = -cos[i];
+        //    sin[n*3/4-i] = -cos[i];
+        //    cos[n-i]   = cos[i];
+        //    sin[n*3/4+i] = -cos[i];
+        //}
+
+        for (int i = 0; i < cnt / 2; i++) {
+            cos[i] = Math.cos(-2 * Math.PI * i / cnt);
+            sin[i] = Math.sin(-2 * Math.PI * i / cnt);
+        }
+
+        makeWindow();
+    }
+
+    public static double[] fftCalculator(int cnt, double[] re, double[] im, int length) {
+        if(FFT.n == 0)
+            init(cnt);
+
         if (re.length != im.length) return null;
         if(length > re.length)
             length = re.length;
-        FFT fft = new FFT(re.length);
-        fft.fft(re, im);
+        fft(re, im);
         double[] fftMag = new double[length];
         for (int i = 0; i < length; i++) {
             fftMag[i] = Math.pow(re[i], 2) + Math.pow(im[i], 2);

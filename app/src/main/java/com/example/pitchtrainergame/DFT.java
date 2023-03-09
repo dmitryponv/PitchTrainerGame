@@ -7,8 +7,8 @@ public class DFT {
             length = re.length;
         Complex[] ret = goertzel(re);
         double[] dftMag = new double[length];
-        for (int i = 0; i < length; i++) {
-            dftMag[i] = Math.pow(ret[i].re(), 2) + Math.pow(ret[i].im(), 2);
+        for (int i = 2; i < length-2; i++) {
+            dftMag[i] = (ret[i-2].abs() + ret[i-1].abs() + ret[i].abs() + ret[i+1].abs() + ret[i+2].abs())/5;//Math.pow(ret[i].re(), 2) + Math.pow(ret[i].im(), 2);
         }
         return dftMag;
     }

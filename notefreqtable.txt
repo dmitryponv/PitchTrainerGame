@@ -1,0 +1,183 @@
+C	16.35  	32.70  	65.41   	130.81  	261.63  	523.25  	1046.50  	2093.00  	4186.01  
+C#	17.32  	34.65  	69.30   	138.59  	277.18  	554.37  	1108.73  	2217.46  	4434.92  
+D	18.35  	36.71  	73.42   	146.83  	293.66  	587.33  	1174.66  	2349.32  	4698.63  
+D#	19.45  	38.89  	77.78   	155.56  	311.13  	622.25  	1244.51  	2489.02  	4978.03  
+E	20.60  	41.20  	82.41   	164.81  	329.63  	659.25  	1318.51  	2637.02  	5274.04  
+F	21.83  	43.65  	87.31   	174.61  	349.23  	698.46  	1396.91  	2793.83  	5587.65  
+F#	23.12  	46.25  	92.50   	185.00  	369.99  	739.99  	1479.98  	2959.96  	5919.91  
+G	24.50  	49.00  	98.00   	196.00  	392.00  	783.99  	1567.98  	3135.96  	6271.93  
+G#	25.96  	51.91  	103.83  	207.65  	415.30  	830.61  	1661.22  	3322.44  	6644.88  
+A	27.50  	55.00  	110.00  	220.00  	440.00  	880.00  	1760.00  	3520.00  	7040.00  
+A#	29.14  	58.27  	116.54  	233.08  	466.16  	932.33  	1864.66  	3729.31  	7458.62  
+B	30.87  	61.74  	123.47  	246.94  	493.88  	987.77  	1975.53  	3951.07  	7902.13  
+
+E base = 17 = 82.9hz
+E 6ths = 34 = 331hz
+E 12th = 68 = 664hz
+A = 23 = 110.1hz
+D = 30 = 147.5hz
+G = 39 = 196.0hz
+
+y = 42.609 e^(0.0403x)
+
+
+                    String[] notes = {"C","C#","D","D#","E","F","F#","G","G#","A","A#","B"};
+
+        final double[] octave2 = {
+                65.41,
+                69.30,
+                73.42,
+                77.78,
+                82.41,
+                87.31,
+                92.50,
+                98.00,
+                103.83,
+                110.00,
+                116.54,
+                123.47
+        };
+        if(freq > (octave2[0] - (octave2[1] - octave2[0])/2) && freq < (octave2[1] + octave2[0])/2)
+            {note = "C2"; position = (freq - octave2[0]) / (2*(octave2[1] - octave2[0]));}
+        else if(freq > (octave2[1] + octave2[0])/2 && freq < (octave2[1] + octave2[2])/2)
+            {note = "C#2"; position = (freq - octave2[1]) / ((octave2[2] - octave2[0]));}
+        else if(freq > (octave2[2] + octave2[1])/2 && freq < (octave2[2] + octave2[3])/2)
+            {note = "D2"; position = (freq - octave2[2]) / ((octave2[3] - octave2[1]));}
+        else if(freq > (octave2[3] + octave2[2])/2 && freq < (octave2[3] + octave2[4])/2)
+            {note = "D#2"; position = (freq - octave2[3]) / ((octave2[4] - octave2[2]));}
+        else if(freq > (octave2[4] + octave2[3])/2 && freq < (octave2[4] + octave2[5])/2)
+            {note = "E2"; position = (freq - octave2[4]) / ((octave2[5] - octave2[3]));}
+        else if(freq > (octave2[5] + octave2[4])/2 && freq < (octave2[5] + octave2[6])/2)
+            {note = "F2"; position = (freq - octave2[5]) / ((octave2[6] - octave2[4]));}
+        else if(freq > (octave2[6] + octave2[5])/2 && freq < (octave2[6] + octave2[7])/2)
+            {note = "F#2"; position = (freq - octave2[6]) / ((octave2[7] - octave2[5]));}
+        else if(freq > (octave2[7] + octave2[6])/2 && freq < (octave2[7] + octave2[8])/2)
+            {note = "G2"; position = (freq - octave2[7]) / ((octave2[8] - octave2[6]));}
+        else if(freq > (octave2[8] + octave2[7])/2 && freq < (octave2[8] + octave2[9])/2)
+            {note = "G#2"; position = (freq - octave2[8]) / ((octave2[9] - octave2[7]));}
+        else if(freq > (octave2[9] + octave2[8])/2 && freq < (octave2[9] + octave2[10])/2)
+            {note = "A2"; position = (freq - octave2[9]) / ((octave2[10] - octave2[8]));}
+        else if(freq > (octave2[10] + octave2[9])/2 && freq < (octave2[10] + octave2[11])/2)
+            {note = "A#2"; position = (freq - octave2[10]) / ((octave2[11] - octave2[9]));}
+        else if(freq > (octave2[11] + octave2[10])/2 && freq < (octave2[11] + (octave2[11] - octave2[10])/2))
+            {note = "B2"; position = (freq - octave2[11]) / (2*(octave2[11] - octave2[2]));}
+            
+            
+        final double[] octave3 = {
+                130.81,
+                138.59,
+                146.83,
+                155.56,
+                164.81,
+                174.61,
+                185.00,
+                196.00,
+                207.65,
+                220.00,
+                233.08,
+                246.94
+        };
+        if(freq > (octave3[0] - (octave3[1] - octave3[0])/2) && freq < (octave3[1] + octave3[0])/2)
+            {note = "C3"; position = (freq - octave3[0]) / (2*(octave3[1] - octave3[0]));}
+        else if(freq > (octave3[1] + octave3[0])/2 && freq < (octave3[1] + octave3[2])/2)
+            {note = "C#3"; position = (freq - octave3[1]) / ((octave3[2] - octave3[0]));}
+        else if(freq > (octave3[2] + octave3[1])/2 && freq < (octave3[2] + octave3[3])/2)
+            {note = "D3"; position = (freq - octave3[2]) / ((octave3[3] - octave3[1]));}
+        else if(freq > (octave3[3] + octave3[2])/2 && freq < (octave3[3] + octave3[4])/2)
+            {note = "D#3"; position = (freq - octave3[3]) / ((octave3[4] - octave3[2]));}
+        else if(freq > (octave3[4] + octave3[3])/2 && freq < (octave3[4] + octave3[5])/2)
+            {note = "E3"; position = (freq - octave3[4]) / ((octave3[5] - octave3[3]));}
+        else if(freq > (octave3[5] + octave3[4])/2 && freq < (octave3[5] + octave3[6])/2)
+            {note = "F3"; position = (freq - octave3[5]) / ((octave3[6] - octave3[4]));}
+        else if(freq > (octave3[6] + octave3[5])/2 && freq < (octave3[6] + octave3[7])/2)
+            {note = "F#3"; position = (freq - octave3[6]) / ((octave3[7] - octave3[5]));}
+        else if(freq > (octave3[7] + octave3[6])/2 && freq < (octave3[7] + octave3[8])/2)
+            {note = "G3"; position = (freq - octave3[7]) / ((octave3[8] - octave3[6]));}
+        else if(freq > (octave3[8] + octave3[7])/2 && freq < (octave3[8] + octave3[9])/2)
+            {note = "G#3"; position = (freq - octave3[8]) / ((octave3[9] - octave3[7]));}
+        else if(freq > (octave3[9] + octave3[8])/2 && freq < (octave3[9] + octave3[10])/2)
+            {note = "A3"; position = (freq - octave3[9]) / ((octave3[10] - octave3[8]));}
+        else if(freq > (octave3[10] + octave3[9])/2 && freq < (octave3[10] + octave3[11])/2)
+            {note = "A#3"; position = (freq - octave3[10]) / ((octave3[11] - octave3[9]));}
+        else if(freq > (octave3[11] + octave3[10])/2 && freq < (octave3[11] + (octave3[11] - octave3[10])/2))
+            {note = "B3"; position = (freq - octave3[11]) / (2*(octave3[11] - octave3[2]));}
+            
+            
+        final double[] octave4 = {
+                261.63,
+                277.18,
+                293.66,
+                311.13,
+                329.63,
+                349.23,
+                369.99,
+                392.00,
+                415.30,
+                440.00,
+                466.16,
+                493.88
+        };
+        if(freq > (octave4[0] - (octave4[1] - octave4[0])/2) && freq < (octave4[1] + octave4[0])/2)
+            {note = "C4"; position = (freq - octave4[0]) / (2*(octave4[1] - octave4[0]));}
+        else if(freq > (octave4[1] + octave4[0])/2 && freq < (octave4[1] + octave4[2])/2)
+            {note = "C#4"; position = (freq - octave4[1]) / ((octave4[2] - octave4[0]));}
+        else if(freq > (octave4[2] + octave4[1])/2 && freq < (octave4[2] + octave4[3])/2)
+            {note = "D4"; position = (freq - octave4[2]) / ((octave4[3] - octave4[1]));}
+        else if(freq > (octave4[3] + octave4[2])/2 && freq < (octave4[3] + octave4[4])/2)
+            {note = "D#4"; position = (freq - octave4[3]) / ((octave4[4] - octave4[2]));}
+        else if(freq > (octave4[4] + octave4[3])/2 && freq < (octave4[4] + octave4[5])/2)
+            {note = "E4"; position = (freq - octave4[4]) / ((octave4[5] - octave4[3]));}
+        else if(freq > (octave4[5] + octave4[4])/2 && freq < (octave4[5] + octave4[6])/2)
+            {note = "F4"; position = (freq - octave4[5]) / ((octave4[6] - octave4[4]));}
+        else if(freq > (octave4[6] + octave4[5])/2 && freq < (octave4[6] + octave4[7])/2)
+            {note = "F#4"; position = (freq - octave4[6]) / ((octave4[7] - octave4[5]));}
+        else if(freq > (octave4[7] + octave4[6])/2 && freq < (octave4[7] + octave4[8])/2)
+            {note = "G4"; position = (freq - octave4[7]) / ((octave4[8] - octave4[6]));}
+        else if(freq > (octave4[8] + octave4[7])/2 && freq < (octave4[8] + octave4[9])/2)
+            {note = "G#4"; position = (freq - octave4[8]) / ((octave4[9] - octave4[7]));}
+        else if(freq > (octave4[9] + octave4[8])/2 && freq < (octave4[9] + octave4[10])/2)
+            {note = "A4"; position = (freq - octave4[9]) / ((octave4[10] - octave4[8]));}
+        else if(freq > (octave4[10] + octave4[9])/2 && freq < (octave4[10] + octave4[11])/2)
+            {note = "A#4"; position = (freq - octave4[10]) / ((octave4[11] - octave4[9]));}
+        else if(freq > (octave4[11] + octave4[10])/2 && freq < (octave4[11] + (octave4[11] - octave4[10])/2))
+            {note = "B4"; position = (freq - octave4[11]) / (2*(octave4[11] - octave4[2]));}
+            
+            
+        final double[] octave5 = {
+                523.25,
+                554.37,
+                587.33,
+                622.25,
+                659.25,
+                698.46,
+                739.99,
+                783.99,
+                830.61,
+                880.00,
+                932.33,
+                987.77
+        };
+        if(freq > (octave5[0] - (octave5[1] - octave5[0])/2) && freq < (octave5[1] + octave5[0])/2)
+            {note = "C5"; position = (freq - octave5[0]) / (2*(octave5[1] - octave5[0]));}
+        else if(freq > (octave5[1] + octave5[0])/2 && freq < (octave5[1] + octave5[2])/2)
+            {note = "C#5"; position = (freq - octave5[1]) / ((octave5[2] - octave5[0]));}
+        else if(freq > (octave5[2] + octave5[1])/2 && freq < (octave5[2] + octave5[3])/2)
+            {note = "D5"; position = (freq - octave5[2]) / ((octave5[3] - octave5[1]));}
+        else if(freq > (octave5[3] + octave5[2])/2 && freq < (octave5[3] + octave5[4])/2)
+            {note = "D#5"; position = (freq - octave5[3]) / ((octave5[4] - octave5[2]));}
+        else if(freq > (octave5[4] + octave5[3])/2 && freq < (octave5[4] + octave5[5])/2)
+            {note = "E5"; position = (freq - octave5[4]) / ((octave5[5] - octave5[3]));}
+        else if(freq > (octave5[5] + octave5[4])/2 && freq < (octave5[5] + octave5[6])/2)
+            {note = "F5"; position = (freq - octave5[5]) / ((octave5[6] - octave5[4]));}
+        else if(freq > (octave5[6] + octave5[5])/2 && freq < (octave5[6] + octave5[7])/2)
+            {note = "F#5"; position = (freq - octave5[6]) / ((octave5[7] - octave5[5]));}
+        else if(freq > (octave5[7] + octave5[6])/2 && freq < (octave5[7] + octave5[8])/2)
+            {note = "G5"; position = (freq - octave5[7]) / ((octave5[8] - octave5[6]));}
+        else if(freq > (octave5[8] + octave5[7])/2 && freq < (octave5[8] + octave5[9])/2)
+            {note = "G#5"; position = (freq - octave5[8]) / ((octave5[9] - octave5[7]));}
+        else if(freq > (octave5[9] + octave5[8])/2 && freq < (octave5[9] + octave5[10])/2)
+            {note = "A5"; position = (freq - octave5[9]) / ((octave5[10] - octave5[8]));}
+        else if(freq > (octave5[10] + octave5[9])/2 && freq < (octave5[10] + octave5[11])/2)
+            {note = "A#5"; position = (freq - octave5[10]) / ((octave5[11] - octave5[9]));}
+        else if(freq > (octave5[11] + octave5[10])/2 && freq < (octave5[11] + (octave5[11] - octave5[10])/2))
+            {note = "B5"; position = (freq - octave5[11]) / (2*(octave5[11] - octave5[2]));}
